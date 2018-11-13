@@ -2,7 +2,7 @@
 layout: tutorial
 status: publish
 published: true
-title: 'Tutorial 11 : 2D text'
+title: 'Tutorial 11 : 2D 텍스트'
 date: '2011-05-16 22:38:44 +0200'
 date_gmt: '2011-05-16 22:38:44 +0200'
 categories: [tuto]
@@ -11,6 +11,7 @@ tags: []
 language: kr
 ---
 
+이번 튜토리얼에선, 우리가 만든 3D 화면 위에 2D 텍스트를 그리는 방법을 배워볼게요. 
 In this tutorial, we'll learn to draw 2D text on top of our 3D content. In our case, this will be a simple timer :
 
 ![]({{site.baseurl}}/assets/images/tuto-11-2d-text/clock.png)
