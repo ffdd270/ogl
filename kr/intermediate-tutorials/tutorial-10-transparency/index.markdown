@@ -70,9 +70,9 @@ qsort(C)나 std::sort(C++)를 이용해 정렬을 할 수 있을거에요. 하�
 
 그렇게 하면 될건데, (다음 섹터에 더 자세히 설명하겠지만.) 하지만 :
 
-* 속도가 느려질거에요. 각 픽셀들은 10번, 20번, 혹은 훨씬 더 그려야할건데. 안 그래도 모자른 메모리 버스엔 너무 많은 일이에요. 게다가 일반적으론 깊이 버퍼는 먼 픽셀들을 그리지 않을 수 있는데. 여기서는 명시적으로 정렬했으니 깊이 버퍼는 쓸모가 없어요. 
-* 엄청 똑똑한 최적화를 쓰지 않는 이상, 픽셀당 4번(4xMSAA를 쓰고 있어요.) 이 작업을 해야해요. 
-* 모든 투명 삼각형을 정렬하는데도 시간이 걸리고요. 
+* 속도가 느려질거에요. 각 픽셀들은 10번, 20번, 혹은 훨씬 더 그려야할건데. 안 그래도 모자른 메모리 버스엔 너무 많은 일이에요. 게다가 일반적으론 깊이 버퍼는 먼 픽셀들을 그리지 않을 수 있는데. 여기서는 명시적으로 정렬했으니 깊이 버퍼는 쓸모가 없어요.
+* 엄청 똑똑한 최적화를 쓰지 않는 이상, 픽셀당 4번(4xMSAA를 쓰고 있잖아요? 일이 4배 더 늘어버렸네요.) 이나 작업을 해야해요.
+* 모든 투명 삼각형을 정렬하는데도 시간이 걸리고요. 게다가 3만 폴리곤짜리 캐릭터를 투명화 시키고 싶으시다고요? 우와. 한번만 다시 생각해보세요. 진심으로.
 * 만약에 텍스쳐를 바꿔야만 하거나, 더 나쁜 경우로는 쉐이더를 삼각형 하나 하나마다 바꿔야 하면 성능에 심각한 문제가 있을거에요. 하지 마세요.
 
 괜찮은 해결책은 주로 :
@@ -81,13 +81,13 @@ qsort(C)나 std::sort(C++)를 이용해 정렬을 할 수 있을거에요. 하�
 * 이 친구들을 그릴 때엔 같은 쉐이더, 같은 텍스쳐를 쓰세요.
 * 그들이 엄청 다르게 보이면, 텍스쳐를 쓰세요! 쉐이더는 건들지 말고!
 * 정렬을 안해도 *적당히* 괜찮다면. 그냥 행운이라 생각하고 넘어가세요.
-
+* 한번 정렬하고 렌더링 하는 것도 괜찮겠네요.
 ## 순서 - 독립 투명성
 
-만약에 엔진이 진짜, 진짜 최신 기술의 투명성이 필요하면. 다른 기법들을 조사해볼 가치가 있네요.
+만약에 엔진이 진짜, 진짜 최신 기술의 투명성이 필요하면. 다른 기법들을 조사해볼 가치가 있을거에요. 하지만 명심하세요. 성능 증가는 피할 수 없어요!
 
 * [The original 2001 Depth Peeling paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.18.9286&rep=rep1&type=pdf): 픽셀 - 퍼펙트로 결과가 나와요. 그리 빠르진 않아요.
-* [Dual Depth Peeling](http://developer.download.nvidia.com/SDK/10/opengl/src/dual_depth_peeling/doc/DualDepthPeeling.pdf) : bucket 정렬에 대한 여러 논문. 픽셀의 배열을 사용해요. 셰이더에서 깊이별로 정렬하고요. 
+* [Dual Depth Peeling](http://developer.download.nvidia.com/SDK/10/opengl/src/dual_depth_peeling/doc/DualDepthPeeling.pdf) : bucket 정렬에 대한 여러 논문. 픽셀의 배열을 사용해요. 셰이더에서 깊이별로 정렬하고요.
 * [ATI's Mecha Demo](http://fr.slideshare.net/hgruen/oit-and-indirect-illumination-using-dx11-linked-lists) : 훌륭하고, 빠르지만 구현하기 까다롭고. 최신 하드웨어가 필요해요. 연결된 프래그먼트 목록을 사용해요.
 * [Cyril Crassin's variation on the ATI's  technique](http://blog.icare3d.org/2010/07/opengl-40-abuffer-v20-linked-lists-of.html) : 더 어려운 구현!
 
