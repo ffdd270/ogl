@@ -11,13 +11,17 @@ tags: []
 language: kr
 ---
 
+이번 튜토리얼에선 어떻게 3D 컨텐츠위에 2D 글자를 띄울 것인가를 배워볼거에요. 대충 완성되면. 아래와 같은 간단한 타이머가 될거에요! :
+
 In this tutorial, we'll learn to draw 2D text on top of our 3D content. In our case, this will be a simple timer :
 
 ![]({{site.baseurl}}/assets/images/tuto-11-2d-text/clock.png)
 
 
 # The API
+# API
 
+자. 한번 간단한 인터페이스를 구현해봐요. (common/text2D.h에 있어요.) :
 We're going to implement this simple interface (in common/text2D.h):
 
 ``` cpp
@@ -26,18 +30,28 @@ void printText2D(const char * text, int x, int y, int size);
 void cleanupText2D();
 ```
 
+이 코드는 640*480 해상도와 1080p 해상도에서 잘 돌아갈건데. 왜냐하면 x와 y를 [0-800][0-600]으로 사상시켰거든요. 버텍스 쉐이더가 x,y를 다시 스크린의 진짜 크기로 바꿔줄거에요.
+
 In order for the code to work at both 640*480 and 1080p, x and y will be coordinates in [0-800][0-600]. The vertex shader will adapt this to the actual size of the screen.
+
+Common/text2D.cpp을 보시면 구현이 완료된 코드를 보실 수 있어요.
 
 See common/text2D.cpp for the complete implementation.
 
 # The texture
+# 텍스쳐
+
+initText2D는 두 개의 쉐이더들과 텍스쳐가 필요해요. 아. 어떻게 구할지는 염려하지는 마시고, 우선 한번 텍스쳐를 볼까요?
 
 initText2D simply reads a texture and a couple of shaders. There's nothing fancy about it, but let's look at the texture :
 
 ![]({{site.baseurl}}/assets/images/tuto-11-2d-text/fontalpha.png)
 
+이 텍스쳐는 [CBFG](http://www.codehead.co.uk/cbfg/)라는 폰트에서 텍스쳐를 생성하는 툴을 이용해 만들었어요. 물론 툴은 이거 말고도 많아요. --TODO 이거 뒤에 해석하기
 
 This texture was generated using [CBFG](http://www.codehead.co.uk/cbfg/), one of the many tools that generate textures from fonts. If was then imported in Paint.NET where I added a red background (for visualisation purposes only : everywhere you see red, it's supposed to be transparent ).
+
+printText2D의 목표는 텍스쳐 좌표에서 스크린 좌표로 접근할 수 있는 사각형을 만드는 거에요.
 
 The goal of printText2D will thus be to generate quads with the appropriate screen position and texture coordinates.
 
